@@ -1,0 +1,40 @@
+{# templates/fiche_frais/top_visitors.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Top 10 Visiteurs{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Top 10 Visiteurs Médicaux - {{ selectedMonth|date('F Y') }}</h1>
+
+        <form method="get" action="{{ path('top_visitors') }}">
+            <label for="mois">Sélectionnez un mois :</label>
+            <input type="month" id="mois" name="mois" value="{{ selectedMonth }}">
+            <button type="submit">Afficher</button>
+        </form>
+
+        {% if topVisitors is not empty %}
+            <table>
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Montant Validé (€)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for visitor in topVisitors %}
+                    <tr>
+                        <td>{{ visitor.nom }}</td>
+                        <td>{{ visitor.prenom }}</td>
+                        <td>{{ visitor.totalMontantValid|number_format(2, ',', ' ') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="empty-message">Aucun résultat trouvé pour le mois sélectionné.</p>
+        {% endif %}
+    </div>
+{% endblock %}
